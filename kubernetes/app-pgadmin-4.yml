@@ -1,0 +1,52 @@
+#
+# Para criar o POD do pgadmin-4, execute:
+# kubectl create namespace ex4it
+# kubectl create -f app-pgadmin-4.yml --namespace=ex4it
+# 
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: pgadmin-4
+  labels:
+    group: ex4it
+    app: pgadmin-4
+
+spec:
+  ports:
+    - port: 80
+      targetPort: 80
+      name: pgadmin-4
+  clusterIP: None 
+  selector:
+    group: ex4it
+    app: pgadmin-4
+
+---    
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pgadmin-4
+  labels:
+    app: pgadmin-4
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pgadmin-4
+  template:
+    metadata:
+      labels:
+        app: pgadmin-4
+    spec:
+      containers:
+        - name: pgadmin-4
+          image: dpage/pgadmin4
+          ports:
+            - containerPort: 80
+          env:
+            - name: PGADMIN_DEFAULT_EMAIL
+              value: "conta@email.com"
+            - name: PGADMIN_DEFAULT_PASSWORD
+              value: "passw0rd"                            

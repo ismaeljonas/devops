@@ -1,0 +1,18 @@
+#
+# Para criar o Serviço para acessar o pgadmin-4, execute:
+# kubectl create namespace ex4it
+# kubectl create -f servico-pgadmin-4.yml --namespace=ex4it
+# 
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: pgadmin-public
+spec:
+  selector:
+    app: pgadmin-4
+  ports:
+  - port: 80
+    targetPort: 80
+    name: portpgadmin-4
+  type: LoadBalancer
